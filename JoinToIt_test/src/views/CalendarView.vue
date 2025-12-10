@@ -6,7 +6,8 @@ import type {
   DateSelectArg,
   EventClickArg,
   EventDropArg,
-  DatesSetArg
+  DatesSetArg,
+  EventContentArg
 } from '@fullcalendar/core'
 
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -172,7 +173,7 @@ const formatHeaderLabel = (date: Date) => {
   const day = `${date.getDate()}`.padStart(2, '0')
   const month = `${date.getMonth() + 1}`.padStart(2, '0')
 
-  return `${weekday} ${day}/${month}`
+  return `${weekday}`
 }
 
 const calendarOptions = computed<CalendarOptions>(() => ({
@@ -206,6 +207,11 @@ const calendarOptions = computed<CalendarOptions>(() => ({
     timeGridDay: {
       dayHeaderContent: arg => formatHeaderLabel(arg.date),
     },
+  },
+
+  eventContent: (arg: EventContentArg) => {
+    const title = arg.event.title || ''
+    return { html: `<div class="fc-event-title">${title}</div>` }
   },
 
   select: openCreate,
@@ -258,29 +264,42 @@ const anchorToSelection = (info?: DateSelectArg) => {
     <h1 class="page-title">Calendar</h1>
 
     <div class="card calendar-card" ref="calendarContainer">
-      <h2 class="card-title">Calendar View</h2>
-
-      <header class="controls">
-        <div class="nav-buttons">
-          <button class="ghost" @click="goToday">Today</button>
-          <button class="ghost" @click="goPrev">Back</button>
-          <button class="ghost" @click="goNext">Next</button>
+      <div class="controls">
+        <div class="controls-top">
+          <h2 class="card-title">Calendar View</h2>
+          <div class="view-switch">
+            <button
+              v-for="view in [
+                { id: 'dayGridMonth', label: 'Month' },
+                { id: 'timeGridWeek', label: 'Week' },
+                { id: 'timeGridDay', label: 'Day' },
+                { id: 'listWeek', label: 'Agenda' },
+              ]"
+              :key="view.id"
+              :class="['ghost', { active: activeView === view.id }]"
+              @click="changeView(view.id as ViewName)"
+            >
+              {{ view.label }}
+            </button>
+          </div>
         </div>
 
-        <div class="range">{{ rangeTitle }}</div>
+        <div class="controls-bottom">
+          <div class="nav-buttons nav-buttons-main">
+            <button class="ghost" @click="goToday">Today</button>
+            <button class="ghost" @click="goPrev">Back</button>
+            <button class="ghost" @click="goNext">Next</button>
+          </div>
 
-        <div class="view-switch">
-          <button v-for="view in [
-            { id: 'dayGridMonth', label: 'Month' },
-            { id: 'timeGridWeek', label: 'Week' },
-            { id: 'timeGridDay', label: 'Day' },
-            { id: 'listWeek', label: 'Agenda' },
-          ]" :key="view.id" :class="['ghost', { active: activeView === view.id }]"
-            @click="changeView(view.id as ViewName)">
-            {{ view.label }}
-          </button>
+          <div class="range">{{ rangeTitle }}</div>
+
+          <div class="nav-buttons nav-buttons-clone" aria-hidden="true">
+            <button class="ghost">Today</button>
+            <button class="ghost">Back</button>
+            <button class="ghost">Next</button>
+          </div>
         </div>
-      </header>
+      </div>
 
       <div class="calendar-body">
         <FullCalendar ref="calendarRef" :options="calendarOptions" class="fc-impekable" />
@@ -318,26 +337,36 @@ const anchorToSelection = (info?: DateSelectArg) => {
   min-height: 0;
 }
 
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 10px;
+}
+
+.controls-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .card-title {
-  margin: 0 0 10px;
+  margin: 0;
   font-size: 16px;
   font-weight: 600;
   color: #4a4d61;
 }
 
-.controls {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+.controls-bottom {
+  display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  justify-content: space-between;
 }
 
 .nav-buttons,
 .view-switch {
   display: inline-flex;
   gap: 0;
-  justify-content: flex-start;
   align-items: center;
 }
 
@@ -367,11 +396,17 @@ const anchorToSelection = (info?: DateSelectArg) => {
   justify-self: center;
   font-weight: 600;
   color: #4a4d61;
+  flex: 1;
+  text-align: center;
 }
 
 .nav-buttons .ghost + .ghost,
 .view-switch .ghost + .ghost {
   border-left: none;
+}
+
+.nav-buttons-clone {
+  visibility: hidden;
 }
 
 .nav-buttons .ghost:first-child,

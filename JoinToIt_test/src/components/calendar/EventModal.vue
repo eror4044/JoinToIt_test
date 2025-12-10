@@ -94,7 +94,9 @@ const floating = ref<HTMLElement | null>(null)
 watch(
   () => props.referenceEl,
   el => {
-    reference.value = el ?? null
+    if (el) {
+      reference.value = el
+    }
   },
   { immediate: true }
 )
@@ -102,7 +104,6 @@ watch(
 const { floatingStyles } = useFloating(reference, floating, {
   placement: 'bottom',
   middleware: [offset(8), flip(), shift({ padding: 8 })],
-  whileElementsMounted: autoUpdate,
 })
 
 const buildDateTime = (date: string, time: string) => new Date(`${date}T${time}:00`)
