@@ -9,6 +9,7 @@ import Components from 'unplugin-vue-components/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/JoinToIt_test/',
   plugins: [
     vue(),
     vueDevTools(),
