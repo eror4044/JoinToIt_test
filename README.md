@@ -7,11 +7,11 @@ Supports creating, editing, deleting and dragging events in Month / Week / Day /
 
 **Month view**
 
-![Month view](JoinToIt_test/public/media/month.png)
+![Month view](public/media/month.png)
 
 **Week view**
 
-![Week view](JoinToIt_test/public/media/week.png)
+![Week view](public/media/week.png)
 
 ## Features
 
