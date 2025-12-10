@@ -3,8 +3,15 @@
 Pixel‑perfect clone of the **Impekable Calendar** UI built with **Vue 3** and **FullCalendar**.  
 Supports creating, editing, deleting and dragging events in Month / Week / Day / Agenda views.
 
-> 📷 Screenshot placeholder – paste image here  
-> 🎞 GIF placeholder – paste interaction demo here
+## Screenshots
+
+**Month view**
+
+![Month view](JoinToIt_test/public/media/month.png)
+
+**Week view**
+
+![Week view](JoinToIt_test/public/media/week.png)
 
 ## Features
 
@@ -26,11 +33,11 @@ Supports creating, editing, deleting and dragging events in Month / Week / Day /
 
 ## Tech Stack
 
-- **Framework**: Vue 3, `<script setup>` + TypeScript
-- **Build tool**: Vite
-- **Calendar**: FullCalendar 6 (`@fullcalendar/vue3`, `daygrid`, `timegrid`, `interaction`, `list`)
-- **Positioning**: `@floating-ui/vue` for anchored popover
-- **Icons**: `unplugin-icons` (Material Design Icons)
+- **Framework**: Vue 3, `<script setup>` + TypeScript  
+- **Build tool**: Vite  
+- **Calendar**: FullCalendar 6 (`@fullcalendar/vue3`, `daygrid`, `timegrid`, `interaction`, `list`)  
+- **Positioning**: `@floating-ui/vue` for anchored popover  
+- **Icons**: `unplugin-icons` (Material Design Icons)  
 - **Styling**: CSS modules per component + global CSS variables
 
 ## Project Structure
@@ -59,9 +66,10 @@ Open http://localhost:5173 (default Vite port).
 npm run build
 ```
 
-The built assets will be output to the `dist` directory and are ready to be deployed (for example, to GitHub Pages). 
+The built assets will be output to the `dist` directory and are ready to be deployed (for example, to GitHub Pages).
 
 ## Notes
 
 - All times are stored as native `Date` instances and normalized to avoid off‑by‑one issues with time zones.
 - The calendar is intentionally kept in a single page (`CalendarView.vue`) so the layout and styling are easy to adjust against the original design.
+*** End Patch ***!
